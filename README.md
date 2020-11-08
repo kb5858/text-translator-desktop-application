@@ -1,0 +1,1 @@
+# text-translator-desktop-application

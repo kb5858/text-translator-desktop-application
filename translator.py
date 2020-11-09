@@ -1,4 +1,3 @@
-
 from tkinter import *
 from tkinter.ttk import Combobox
 from tkinter import messagebox
@@ -6,13 +5,13 @@ from textblob import TextBlob
 
 root = Tk()
 root.geometry('500x400')
-root.title('Translator')
+root.title('Language Translator')
 root.resizable(True, True)
 root.configure(bg='turquoise1')
 
 ## LANGUAGE DICTIONARY
 
-lang_dict = {'afrikaans': 'af', 'albanian': 'sq', 'amharic': 'am', 'arabic': 'ar', 'armenian': 'hy',
+dict = {'afrikaans': 'af', 'albanian': 'sq', 'amharic': 'am', 'arabic': 'ar', 'armenian': 'hy',
  'azerbaijani': 'az', 'basque': 'eu', 'belarusian': 'be', 'bengali': 'bn', 'bosnian': 'bs', 
  'bulgarian': 'bg', 'catalan': 'ca', 'cebuano': 'ceb', 'chichewa': 'ny', 
  'chinese (simplified)': 'zh-cn', 'chinese (traditional)': 'zh-tw', 'corsican': 'co', 'croatian': 'hr', 
@@ -36,56 +35,55 @@ lang_dict = {'afrikaans': 'af', 'albanian': 'sq', 'amharic': 'am', 'arabic': 'ar
 ## COMBO-BOX  - SCROLL-DOWN-FOR-LANGUAGES
 
 languages = StringVar()
-font_box = Combobox(root,width=30,textvariable=languages,state='readonly')
-font_box['values'] = [e for e in lang_dict.keys()]
-font_box.current(37)
-font_box.place(x=300,y=0)
+fontbox = Combobox(root,width=30,textvariable=languages,state='readonly')
+fontbox['values'] = [e for e in dict.keys()]
+fontbox.current(37)
+fontbox.place(x=300,y=0)
 
-def tt(event=None):
+def display(event=None):
     try:
-        word3=TextBlob(varname1.get())
-        lan=word3.detect_language()
-        lan_todict=languages.get()
-        lan_to=lang_dict[lan_todict]
-        word3=word3.translate(from_lang=lan,to=lan_to)
-        label3.configure(text=word3)
-        varname2.set(word3)
+        text=TextBlob(var1.get())
+        lang=text.detect_language()
+        lang_dict=languages.get()
+        lang_to=dict[lang_dict]
+        text=text.translate(from_lang=lang,to=lang_to)
+        var2.set(text)
     except:
-        varname2.set("try another keyword")
+        var2.set("Try another keyword")
     
 
-def main_exit():
-    rr=messagebox.askyesnocancel('notification','do u want to exit',parent=root)
-    if(rr==True):
+def exit():
+    message=messagebox.askyesnocancel('Alert','Do u want to exit',parent=root)
+    if(message==True):
         root.destroy()
 
 ###binding functions####
-def on_enterentry1(e):
+def enterentry1(e):
     entry1['bg']="spring green"
-def on_leaveentry1(e):
+def leaveentry1(e):
     entry1['bg']="white"
-def on_enterentry2(e):
+def enterentry2(e):
     entry2['bg']="spring green"
-def on_leaveentry2(e):
+def leaveentry2(e):
     entry2['bg']="white"
-def on_enterbtn1(e):
+def enterbtn1(e):
     btn1['bg']="yellow"
-def on_leavebtn1(e):
+def leavebtn1(e):
     btn1['bg']="pink"
-def on_enterbtn2(e):
+def enterbtn2(e):
     btn2['bg']="yellow"
-def on_leavebtn2(e):
+def leavebtn2(e):
     btn2['bg']="pink"
 
 
 ## ENTRY-BOX
 
-varname1 = StringVar()
-entry1 = Entry(root,width=30,textvariable=varname1,font=('times', 15, 'italic bold'))
+var1 = StringVar()
+entry1 = Entry(root,width=30,textvariable=var1,font=('times', 15, 'italic bold'))
 entry1.place(x=150,y=40)
 
-varname2 = StringVar()
-entry2 = Entry(root,width=30,textvariable=varname2,font=('times', 15, 'italic bold'))
+var2 = StringVar()
+entry2 = Entry(root,width=30,textvariable=var2,font=('times', 15, 'italic bold'))
 entry2.place(x=150,y=100)
 
 ## LABELS
@@ -93,38 +91,32 @@ entry2.place(x=150,y=100)
 label1 = Label(root,text='Enter to convert:',font=('times', 15, 'italic bold'),bg='turquoise1')
 label1.place(x=5,y=40)
 
-label2 = Label(root,text='Converted : ',font=('times', 15, 'italic bold'),bg='turquoise1')
+label2 = Label(root,text='Converted text: ',font=('times', 15, 'italic bold'),bg='turquoise1')
 label2.place(x=5,y=100)
-
-label3 = Label(root,text='',font=('times', 15, 'italic bold'),bg='turquoise1')
-label3.place(x=5,y=250)
 
 ## BUTTONS
 
 btn1 = Button(root,text='Click',bd=5,bg='white',activebackground='red',width=10,font=('times', 15,
- 'italic bold'),command=tt)
+ 'italic bold'),command=display)
 btn1.place(x=70,y=170)
 
 btn2 = Button(root,text='Exit',bd=5,bg='white',activebackground='red',width=10,font=('times', 15,
- 'italic bold'),command=main_exit)
+ 'italic bold'),command=exit)
 btn2.place(x=280,y=170)
 
 ####binding######
-entry1.bind('<Enter>',on_enterentry1)
-entry1.bind('<Leave>',on_leaveentry1)
+entry1.bind('<Enter>',enterentry1)
+entry1.bind('<Leave>',leaveentry1)
 
-entry2.bind('<Enter>',on_enterentry2)
-entry2.bind('<Leave>',on_leaveentry2)
+entry2.bind('<Enter>',enterentry2)
+entry2.bind('<Leave>',leaveentry2)
 
-btn1.bind('<Enter>',on_enterbtn1)
-btn2.bind('<Leave>',on_leavebtn1)
+btn1.bind('<Enter>',enterbtn1)
+btn1.bind('<Leave>',leavebtn1)
 
-btn2.bind('<Enter>',on_enterbtn2)
-btn2.bind('<Leave>',on_leavebtn2)
+btn2.bind('<Enter>',enterbtn2)
+btn2.bind('<Leave>',leavebtn2)
 
-
-
-
-root.bind('<Return>',tt)
+root.bind('<Return>',display)
 
 root.mainloop()

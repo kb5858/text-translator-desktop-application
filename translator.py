@@ -1,13 +1,21 @@
+
 from tkinter import *
 from tkinter.ttk import Combobox
 from tkinter import messagebox
 from textblob import TextBlob
+import speech_recognition as sr 
+import pyttsx3
+
+r = sr.Recognizer() 
+engine = pyttsx3.init()
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[1].id)
 
 root = Tk()
 root.geometry('600x450')
 root.title('Language Translator')
 root.resizable(False, False)
-root.configure(bg='gold2')
+root.configure(bg='pink')
 
 ## LANGUAGE DICTIONARY
 
@@ -37,7 +45,7 @@ dict = {'afrikaans': 'af', 'albanian': 'sq', 'amharic': 'am', 'arabic': 'ar', 'a
 languages = StringVar()
 fontbox = Combobox(root, width=30, textvariable=languages, state='readonly')
 fontbox['values'] = [e for e in dict.keys()]
-fontbox.current(37)
+fontbox.current(87)
 fontbox.place(x=380, y=20)
 
 
@@ -47,8 +55,11 @@ def display(event=None):
         lang = text.detect_language()
         lang_dict = languages.get()
         lang_to = dict[lang_dict]
-        text = text.translate(from_lang=lang, to=lang_to)
-        var2.set(text)
+        mytext = text.translate(from_lang=lang, to=lang_to)
+        var2.set(mytext)
+        pyttsx3.speak(mytext)
+        
+        
     except:
         var2.set("Try another keyword")
 
@@ -92,9 +103,18 @@ def leavebtn2(e):
     btn2['bg'] = "khaki4"
 
 
-## ENTRY-BOX
+## taking input from user
 
+with sr.Microphone() as s:
+    pyttsx3.speak("Please enter text to be translated")
+    r.adjust_for_ambient_noise(s)
+
+    audio = r.listen(s)
+    speech=r.recognize_google(audio, language = 'en-IN')
+        
+ ## ENTRY-BOX       
 var1 = StringVar()
+var1.set(speech)
 entry1 = Entry(root, width=30, textvariable=var1, font=('times', 15, 'italic bold'))
 entry1.place(x=180, y=80)
 
